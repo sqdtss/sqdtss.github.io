@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Space of Mr. Tan</title>
+    <link>https://sqdtss.github.io/</link>
+    <description>Recent content on Space of Mr. Tan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Jan 2022 15:55:19 +0800</lastBuildDate><atom:link href="https://sqdtss.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pytorch载入保存的模型更换gpu卡号map_location</title>
+      <link>https://sqdtss.github.io/posts/pytorch%E8%BD%BD%E5%85%A5%E4%BF%9D%E5%AD%98%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%9B%B4%E6%8D%A2gpu%E5%8D%A1%E5%8F%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AEmap_location/</link>
+      <pubDate>Thu, 06 Jan 2022 15:55:19 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/pytorch%E8%BD%BD%E5%85%A5%E4%BF%9D%E5%AD%98%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%9B%B4%E6%8D%A2gpu%E5%8D%A1%E5%8F%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AEmap_location/</guid>
+      <description>Pytorch在保存模型时，会把训练过程中使用的设备号（GPU:0, CPU等）也一起保存下来，当load保存的模型时，会默认把权重加载到训练</description>
+    </item>
+    
+    <item>
+      <title>跨域请求</title>
+      <link>https://sqdtss.github.io/posts/%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/</link>
+      <pubDate>Thu, 16 Dec 2021 20:15:55 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/</guid>
+      <description>什么是跨域请求 转自：https://www.jianshu.com/p/f880878c1398 概述 在 HTML 中，&amp;lt;a&amp;gt;, &amp;lt;form&amp;gt;, &amp;lt;img&amp;gt;, &amp;lt;script&amp;gt;, &amp;lt;iframe&amp;gt;, &amp;lt;link&amp;gt; 等</description>
+    </item>
+    
+    <item>
+      <title>docker自定义默认网桥docker0</title>
+      <link>https://sqdtss.github.io/posts/docker%E8%87%AA%E5%AE%9A%E4%B9%89%E9%BB%98%E8%AE%A4%E7%BD%91%E6%A1%A5docker0/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/docker%E8%87%AA%E5%AE%9A%E4%B9%89%E9%BB%98%E8%AE%A4%E7%BD%91%E6%A1%A5docker0/</guid>
+      <description>如果服务已经开始需要先停止服务，并删除旧的网络。 sudo service docker stop sudo ip link set dev docker0 down sudo brctl delbr docker0 创建自定义docker0 sudo brctl addbr docker0 sudo ip addr add 192.188.0.1/16 dev docker0 sudo ip link set dev docker0 up 重</description>
+    </item>
+    
+    <item>
+      <title>markdown的使用语法</title>
+      <link>https://sqdtss.github.io/posts/markdown%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/markdown%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95/</guid>
+      <description>1.标题设置 在标题文字前加#，一级标题为#，二级标题为##，三级标题为###，以此类推，最多六级，其中一级标题文字最大。 一级标题 二级标题 三级</description>
+    </item>
+    
+    <item>
+      <title>Python使用logging.info()方法终端不显示</title>
+      <link>https://sqdtss.github.io/posts/python%E4%BD%BF%E7%94%A8logging.info%E6%96%B9%E6%B3%95%E7%BB%88%E7%AB%AF%E4%B8%8D%E6%98%BE%E7%A4%BA/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/python%E4%BD%BF%E7%94%A8logging.info%E6%96%B9%E6%B3%95%E7%BB%88%E7%AB%AF%E4%B8%8D%E6%98%BE%E7%A4%BA/</guid>
+      <description>在logging.info()之前添加一行代码：logging.getLogger().setLevel(logging.INFO)</description>
+    </item>
+    
+  </channel>
+</rss>

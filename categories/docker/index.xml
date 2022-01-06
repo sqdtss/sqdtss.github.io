@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>docker on Space of Mr. Tan</title>
+    <link>https://sqdtss.github.io/categories/docker/</link>
+    <description>Recent content in docker on Space of Mr. Tan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 02 Dec 2021 19:17:23 +0800</lastBuildDate><atom:link href="https://sqdtss.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker自定义默认网桥docker0</title>
+      <link>https://sqdtss.github.io/posts/docker%E8%87%AA%E5%AE%9A%E4%B9%89%E9%BB%98%E8%AE%A4%E7%BD%91%E6%A1%A5docker0/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/docker%E8%87%AA%E5%AE%9A%E4%B9%89%E9%BB%98%E8%AE%A4%E7%BD%91%E6%A1%A5docker0/</guid>
+      <description>如果服务已经开始需要先停止服务，并删除旧的网络。 sudo service docker stop sudo ip link set dev docker0 down sudo brctl delbr docker0 创建自定义docker0 sudo brctl addbr docker0 sudo ip addr add 192.188.0.1/16 dev docker0 sudo ip link set dev docker0 up 重</description>
+    </item>
+    
+  </channel>
+</rss>

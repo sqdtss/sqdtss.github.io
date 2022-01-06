@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Space of Mr. Tan</title>
+    <link>https://sqdtss.github.io/tags/</link>
+    <description>Recent content in Tags on Space of Mr. Tan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Jan 2022 15:55:19 +0800</lastBuildDate><atom:link href="https://sqdtss.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pytorch</title>
+      <link>https://sqdtss.github.io/tags/pytorch/</link>
+      <pubDate>Thu, 06 Jan 2022 15:55:19 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/tags/pytorch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>前端</title>
+      <link>https://sqdtss.github.io/tags/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Thu, 16 Dec 2021 20:15:55 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/tags/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://sqdtss.github.io/tags/docker/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>others</title>
+      <link>https://sqdtss.github.io/tags/others/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/tags/others/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://sqdtss.github.io/tags/python/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

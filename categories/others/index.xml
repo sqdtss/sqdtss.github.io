@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>others on Space of Mr. Tan</title>
+    <link>https://sqdtss.github.io/categories/others/</link>
+    <description>Recent content in others on Space of Mr. Tan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 02 Dec 2021 19:17:23 +0800</lastBuildDate><atom:link href="https://sqdtss.github.io/categories/others/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>markdown的使用语法</title>
+      <link>https://sqdtss.github.io/posts/markdown%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/markdown%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95/</guid>
+      <description>1.标题设置 在标题文字前加#，一级标题为#，二级标题为##，三级标题为###，以此类推，最多六级，其中一级标题文字最大。 一级标题 二级标题 三级</description>
+    </item>
+    
+  </channel>
+</rss>

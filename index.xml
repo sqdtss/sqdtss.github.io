@@ -8,7 +8,7 @@
     <language>en</language>
     <lastBuildDate>Thu, 06 Jan 2022 15:55:19 +0800</lastBuildDate><atom:link href="https://sqdtss.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Pytorch载入保存的模型更换gpu卡号map_location</title>
+      <title>Pytorch载入保存的模型更换gpu卡号如何设置map_location</title>
       <link>https://sqdtss.github.io/posts/pytorch%E8%BD%BD%E5%85%A5%E4%BF%9D%E5%AD%98%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%9B%B4%E6%8D%A2gpu%E5%8D%A1%E5%8F%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AEmap_location/</link>
       <pubDate>Thu, 06 Jan 2022 15:55:19 +0800</pubDate>
       

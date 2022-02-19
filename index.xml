@@ -52,5 +52,14 @@
       <description>在logging.info()之前添加一行代码：logging.getLogger().setLevel(logging.INFO)</description>
     </item>
     
+    <item>
+      <title>线段树模板hdu1754: I Hate It</title>
+      <link>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%A8%A1%E6%9D%BFhdu1754/</link>
+      <pubDate>Tue, 07 Aug 2018 11:58:59 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%A8%A1%E6%9D%BFhdu1754/</guid>
+      <description>I Hate It Time Limit: 9000/3000 MS (Java/Others) Memory Limit: 32768/32768 K (Java/Others) Total Submission(s): 100523 Accepted Submission(s): 37845 Problem Description 很多学校流行一种比较的习惯。老师们很喜欢询问，从某某到某某当中，分数最高的是多少。这让很多学生很反</description>
+    </item>
+    
   </channel>
 </rss>

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>跨域请求 | Space of Mr. Tan</title>
-<meta name="keywords" content="前端" />
+<meta name="keywords" content="front end" />
 <meta name="description" content="什么是跨域请求 转自：https://www.jianshu.com/p/f880878c1398 概述 在 HTML 中，&lt;a&gt;, &lt;form&gt;, &lt;img&gt;, &lt;script&gt;, &lt;iframe&gt;, &lt;link&gt; 等">
 <meta name="author" content="">
 <link rel="canonical" href="https://sqdtss.github.io/posts/%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/" />
@@ -98,7 +98,7 @@
   "name": "跨域请求",
   "description": "什么是跨域请求 转自：https://www.jianshu.com/p/f880878c1398 概述 在 HTML 中，\u0026lt;a\u0026gt;, \u0026lt;form\u0026gt;, \u0026lt;img\u0026gt;, \u0026lt;script\u0026gt;, \u0026lt;iframe\u0026gt;, \u0026lt;link\u0026gt; 等",
   "keywords": [
-    "前端"
+    "front end"
   ],
   "articleBody": "什么是跨域请求 转自：https://www.jianshu.com/p/f880878c1398 概述 在 HTML 中，, , , , ,  等标签以及 Ajax 都可以指向一个资源地址，而所谓的跨域请求就是指：当前发起请求的域与该请求指向的资源所在的域不一样。这里的域指的是这样的一个概念：若协议 + 域名 + 端口号均相同，那么就是同域。\n跨域请求的安全问题 通常，浏览器会对上面提到的跨域请求作出限制。浏览器之所以要对跨域请求作出限制，是出于安全方面的考虑，因为跨域请求有可能被不法分子利用来发动 CSRF攻击。\nCSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。CSRF攻击者在用户已经登录目标网站之后，诱使用户访问一个攻击页面，利用目标网站对用户的信任，以用户身份在攻击页面对目标网站发起伪造用户操作的请求，达到攻击目的。\n跨域解决方法 虽然在安全层面上同源限制是必要的，但有时同源策略会对我们的合理用途造成影响，为了避免开发的应用受到限制，有多种方式可以绕开同源策略，下面介绍的是经常使用的 JSONP, CORS 方法。\nJSONP 原理：  JSONP 是一种非官方的跨域数据交互协议 JSONP 本质上是利用  等标签不受同源策略限制，可以从不同域加载并执行资源的特性，来实现数据跨域传输。 JSONP由两部分组成：回调函数和数据。回调函数是当响应到来时应该在页面中调用的函数，而数据就是传入回调函数中的JSON数据。 JSONP 的理念就是，与服务端约定好一个回调函数名，服务端接收到请求后，将返回一段 Javascript，在这段 Javascript 代码中调用了约定好的回调函数，并且将数据作为参数进行传递。当网页接收到这段 Javascript 代码后，就会执行这个回调函数，这时数据已经成功传输到客户端了。  示例： 首先当前页面中声明有这样的一个函数，它将作为 JSONP 的回调函数处理作为函数参数传入的数据\n type=\"text/javascript\" function dosomething(jsondata){ //处理获得的json数据 }  然后，我们就可以借助  等标签可以引入不同域资源的特性，将需要发送的请求的路径作为src参数，其中需要注意的是：需要告知服务端回调函数的函数名。\n src=\"http://example.com/data.php?callback=dosomething\" 这时服务端在返回数据的时候，就会返回一端 Javascript 代码，在 Javascript代码中调用了回调函数，并且需要返回的数据作为回调函数的参数\ndosomething(['a','b','c']); 最后页面成功加载了刚才指定路径的资源后，将会执行该 Javascript 代码，dosomething函数将执行，这时一次跨域请求完成。\n另外，如果页面引入了 jQuery，那么可以通过它封装的方法很方便的实现JSONP操作了\n// Using YQL and JSONP $.ajax({ url: \"http://query.yahooapis.com/v1/public/yql\", // The name of the callback parameter, as specified by the YQL service  jsonp: \"callback\", // Tell jQuery we're expecting JSONP  dataType: \"jsonp\", // Tell YQL what we want and that we want JSON  data: { q: \"select title,abstract,url from search.news where query=\\\"cat\\\"\", format: \"json\" }, // Work with the response  success: function( response ) { console.log( response ); // server response  } }); 优缺点： JSONP 的优点是：它不像XMLHttpRequest对象实现的Ajax请求那样受到同源策略的限制；它的兼容性更好，在更加古老的浏览器中都可以运行。\nJSONP 的缺点是：它只支持 GET 请求，而不支持 POST 请求等其他类型的 HTTP 请求\nCORS 介绍 跨源资源共享 Cross-Origin Resource Sharing(CORS) 是一个新的 W3C 标准，它新增的一组HTTP首部字段，允许服务端其声明哪些源站有权限访问哪些资源。换言之，它允许浏览器向声明了 CORS 的跨域服务器，发出 XMLHttpReuest 请求，从而克服 Ajax 只能同源使用的限制。\n另外，规范也要求对于非简单请求，浏览器必须首先使用 OPTION 方法发起一个预检请求(preflight request)，从而获知服务端是否允许该跨域请求，在服务器确定允许后，才发起实际的HTTP请求。对于简单请求、非简单请求以及预检请求的详细资料可以阅读HTTP访问控制（CORS） 。\nHTTP 协议 Header 简析 下面对 CORS 中新增的 HTTP 首部字段进行简析：\n  Access-Control-Allow-Origin\n响应首部中可以携带这个头部表示服务器允许哪些域可以访问该资源，其语法如下：\nAccess-Control-Allow-Origin: origin | * 其中，origin 参数的值指定了允许访问该资源的外域 URI。对于不需要携带身份凭证的请求，服务器可以指定该字段的值为通配符，表示允许来自所有域的请求。\n  Access-Control-Allow-Methods\n该首部字段用于预检请求的响应，指明实际请求所允许使用的HTTP方法。其语法如下：\nAccess-Control-Allow-Methods: [, ]*   Access-Control-Allow-Headers\n该首部字段用于预检请求的响应。指明了实际请求中允许携带的首部字段。其语法如下：\nAccess-Control-Allow-Headers: [, ]*   Access-Control-Max-Age\n该首部字段用于预检请求的响应，指定了预检请求能够被缓存多久，其语法如下：\nAccess-Control-Max-Age: delta-seconds   Access-Control-Allow-Credentials\n该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。其语法如下：\nAccess-Control-Allow-Credentials: true 另外，如果要把 Cookie 发送到服务器，除了服务端要带上Access-Control-Allow-Credentials首部字段外，另一方面请求中也要带上withCredentials属性。\n但是需要注意的是：如果需要在 Ajax 中设置和获取 Cookie，那么Access-Control-Allow-Origin首部字段不能设置为* ，必须设置为具体的 origin 源站。详细可阅读文章CORS 跨域 Cookie 的设置与获取\n  Origin\n该首部字段表明预检请求或实际请求的源站。不管是否为跨域请求，Origin字段总是被发送。其语法如下：\nOrigin: origin   Access-Control-Request-Method\n该首部字段用于预检请求。其作用是，将实际请求所使用的 HTTP 方法告诉服务器。其语法如下：\nAccess-Control-Request-Method: method   Access-Control-Request-Headers\n该首部字段用于预检请求。其作用是，将实际请求所携带的首部字段告诉服务器。其语法如下：\nAccess-Control-Request-Headers: [, ]*   与 JSONP 的比较  JSONP 只能实现 GET 请求，而 CORS 支持所有类型的 HTTP 请求 使用 CORS ，开发者可以是使用普通的 XMLHttpRequest 发起请求和获取数据，比起 JSONP 有更好的错误处理 虽然绝大多数现代的浏览器都已经支持 CORS，但是 CORS 的兼容性比不上 JSONP，一些比较老的浏览器只支持 JSONP  Reference  Http跨域请求 浅谈CSRF攻击方式 同源策略详解 详解js跨域问题 HTTP访问控制（CORS） 跨域资源共享 CORS 详解  ",
   "wordCount" : "2324",
@@ -328,7 +328,7 @@
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://sqdtss.github.io/tags/%E5%89%8D%E7%AB%AF/">前端</a></li>
+      <li><a href="https://sqdtss.github.io/tags/front-end/">front end</a></li>
     </ul>
   </footer>
 </article>

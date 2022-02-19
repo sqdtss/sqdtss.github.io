@@ -17,11 +17,11 @@
     </item>
     
     <item>
-      <title>前端</title>
-      <link>https://sqdtss.github.io/categories/%E5%89%8D%E7%AB%AF/</link>
+      <title>front end</title>
+      <link>https://sqdtss.github.io/categories/front-end/</link>
       <pubDate>Thu, 16 Dec 2021 20:15:55 +0800</pubDate>
       
-      <guid>https://sqdtss.github.io/categories/%E5%89%8D%E7%AB%AF/</guid>
+      <guid>https://sqdtss.github.io/categories/front-end/</guid>
       <description></description>
     </item>
     
@@ -49,6 +49,15 @@
       <pubDate>Thu, 02 Dec 2021 19:17:23 +0800</pubDate>
       
       <guid>https://sqdtss.github.io/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algorithm</title>
+      <link>https://sqdtss.github.io/categories/algorithm/</link>
+      <pubDate>Tue, 07 Aug 2018 11:58:59 +0800</pubDate>
+      
+      <guid>https://sqdtss.github.io/categories/algorithm/</guid>
       <description></description>
     </item>
     

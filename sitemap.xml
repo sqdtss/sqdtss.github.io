@@ -2,25 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://sqdtss.github.io/categories/</loc>
-    <lastmod>2022-01-06T15:55:19+08:00</lastmod>
+    <loc>https://sqdtss.github.io/tags/algorithm/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
   </url><url>
-    <loc>https://sqdtss.github.io/categories/deep-learning/</loc>
-    <lastmod>2022-01-06T15:55:19+08:00</lastmod>
+    <loc>https://sqdtss.github.io/categories/algorithm/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
+  </url><url>
+    <loc>https://sqdtss.github.io/categories/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
   </url><url>
     <loc>https://sqdtss.github.io/posts/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
+  </url><url>
+    <loc>https://sqdtss.github.io/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
+  </url><url>
+    <loc>https://sqdtss.github.io/tags/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
+  </url><url>
+    <loc>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2022-02-19T12:14:16+08:00</lastmod>
+  </url><url>
+    <loc>https://sqdtss.github.io/categories/deep-learning/</loc>
     <lastmod>2022-01-06T15:55:19+08:00</lastmod>
   </url><url>
     <loc>https://sqdtss.github.io/tags/pytorch/</loc>
     <lastmod>2022-01-06T15:55:19+08:00</lastmod>
   </url><url>
     <loc>https://sqdtss.github.io/posts/pytorch%E8%BD%BD%E5%85%A5%E4%BF%9D%E5%AD%98%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%9B%B4%E6%8D%A2gpu%E5%8D%A1%E5%8F%B7%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AEmap_location/</loc>
-    <lastmod>2022-01-06T15:55:19+08:00</lastmod>
-  </url><url>
-    <loc>https://sqdtss.github.io/</loc>
-    <lastmod>2022-01-06T15:55:19+08:00</lastmod>
-  </url><url>
-    <loc>https://sqdtss.github.io/tags/</loc>
     <lastmod>2022-01-06T15:55:19+08:00</lastmod>
   </url><url>
     <loc>https://sqdtss.github.io/tags/front-end/</loc>
@@ -59,13 +68,10 @@
     <loc>https://sqdtss.github.io/posts/python%E4%BD%BF%E7%94%A8logging.info%E6%96%B9%E6%B3%95%E7%BB%88%E7%AB%AF%E4%B8%8D%E6%98%BE%E7%A4%BA/</loc>
     <lastmod>2021-12-02T19:17:23+08:00</lastmod>
   </url><url>
-    <loc>https://sqdtss.github.io/tags/algorithm/</loc>
+    <loc>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%A8%A1%E6%9D%BF%E9%A2%98hdu1166/</loc>
     <lastmod>2018-08-07T11:58:59+08:00</lastmod>
   </url><url>
-    <loc>https://sqdtss.github.io/categories/algorithm/</loc>
-    <lastmod>2018-08-07T11:58:59+08:00</lastmod>
-  </url><url>
-    <loc>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%A8%A1%E6%9D%BFhdu1754/</loc>
+    <loc>https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%A8%A1%E6%9D%BF%E9%A2%98hdu1754/</loc>
     <lastmod>2018-08-07T11:58:59+08:00</lastmod>
   </url><url>
     <loc>https://sqdtss.github.io/archives/</loc>

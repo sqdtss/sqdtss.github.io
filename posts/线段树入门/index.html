@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>线段树入门 &amp; lazy思想 | Space of Mr. Tan</title>
+<meta name="keywords" content="algorithm" />
+<meta name="description" content="线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。 对于父区间[a,b]，其子区间为[a,(a&#43;b)/2]和[">
+<meta name="author" content="">
+<link rel="canonical" href="https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%85%A5%E9%97%A8/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://sqdtss.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sqdtss.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sqdtss.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://sqdtss.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sqdtss.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.89.4" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="线段树入门 &amp; lazy思想" />
+<meta property="og:description" content="线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。 对于父区间[a,b]，其子区间为[a,(a&#43;b)/2]和[" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%85%A5%E9%97%A8/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-19T12:14:16&#43;08:00" />
+<meta property="article:modified_time" content="2022-02-19T12:14:16&#43;08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="线段树入门 &amp; lazy思想"/>
+<meta name="twitter:description" content="线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。 对于父区间[a,b]，其子区间为[a,(a&#43;b)/2]和["/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://sqdtss.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "线段树入门 \u0026 lazy思想",
+      "item": "https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%85%A5%E9%97%A8/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "线段树入门 \u0026 lazy思想",
+  "name": "线段树入门 \u0026 lazy思想",
+  "description": "线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。 对于父区间[a,b]，其子区间为[a,(a+b)/2]和[",
+  "keywords": [
+    "algorithm"
+  ],
+  "articleBody": "线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。 对于父区间[a,b]，其子区间为[a,(a+b)/2]和[(a+b)/2+1,b]，用于求区间的值，如区间最值、区间的和等。 代码实现中，约定结点下标从1开始，所以某结点下标为x，那么左儿子下标为2x，右儿子下标为2x+1，父结点下标为x/2。 |:常用符号:| |:符号:|:等价:|:意义:| |:rt«1:|:rt2:|:左子树的编号:| |:rt«1|1:|:rt2+1:|:右子树的编号:| |:(l+r)»1:|:(l+r)/2:|:区间长度的一半:|\n常用宏定义\n#define Mid ((l+r)1) //注意括号 #define lson rt//左结点 #define rson rt//右结点 建树 建树丛根结点开始，递归建立左右子树，直到叶子结点，然后反向赋值，父结点的值 = F(左结点的值，右结点的值），这个F是依据题意变的，如果是区间最大则为max()\nvoid build(int rt,int l,int r) //建编号为rt的区间为[l,r]的树，主函数传进来的固定是(1,1,n) { if(l==r){ //叶子结点赋初值，注意下标，Max的是编号，val原数组的是l，看图可以理解  Max[rt] = val[l]; }else{ //建左右子树  build(lson); build(rson); Max[rt] = max( Max[rt1], Max[rt1|1]); //父结点Max值为Max(左子结点，右子结点）  } } 查询 查询为区间查询（只是查询某个点的话不需要线段树），即在区间里查询某个特性值，每次查询都是从跟结点开始往下，根据查询区间和当前区间的区间位置判断是要去左右子区间查询，还是直接返回。如果被查询区间是查询区间的子区间则直接返回子区间的值，如在[1,6]里查询[1,12]就返回[1,6]的值，不再往下查询。\nvoid query(int rt,int l,int r,int L,int R) //在[l,r]里查询[L,R]的值，[L,R]一直不变，[l,r]变 { if(L  l \u0026\u0026 r  R){ ans1 = max(ans1,Max[rt]); ans2 = min(ans2,Min[rt]); }else{ if( L  Mid) //查询区间在当前区间的左半区间有内容，如在[1,6]里查询[2,3]  query(lson,L,R); if( R  Mid) //同理去右子区间，注意不能有else，因为有横跨左右的情况，如[1,6]里查询[2,5]  query(rson,L,R); } } 更新 更新分为单点更新和区间更新，区间更新等会在下面讲述，而单点更新跟普通区间查询差不多\nvoid update(int rt,int l,int r,int pos,int num) { if(l == r \u0026\u0026 r == pos){ //到对应的叶结点  Max[rt] = num; }else{ if( pos  Mid) update(lson,pos,num); if( pos  Mid) //或者直接else，点不可能同时在两个区间里  update(rson,pos,num); Max[rt] = max( Max[rt1], Max[rt1|1]); } } 数组大小要为原数据范围的4倍，证明可自行百度。\n题目 POJ 3264 Balanced Lineup 求区间的最大值-最小值\n#include #include #include using namespace std; #define FOR( i , a , b ) for ( int i = a ; i #define RE freopen(\"1.in\",\"r\",stdin); #define bug(x) cout #define Mid ((l+r)1) //括号！ #define lson rt#define rson rt const int maxn= 50005; const int inf=0x3f3f3f3f; int Max[maxn2],Min[maxn2]; int ans1,ans2; void build(int rt,int l,int r) { if(l==r){ scanf(\"%d\",\u0026Max[rt]); Min[rt] = Max[rt]; }else{ build(lson); build(rson); Max[rt] = max( Max[rt1], Max[rt1|1]); Min[rt] = min( Min[rt1], Min[rt1|1]); } } void query(int rt,int l,int r,int L,int R) { if(L  l \u0026\u0026 r  R){ ans1 = max(ans1,Max[rt]); ans2 = min(ans2,Min[rt]); }else{ if( L  Mid) query(lson,L,R); if( R  Mid) query(rson,L,R); } } int main() { int n,m,L,R; while(scanf(\"%d%d\",\u0026n,\u0026m)!=EOF){ build(1,1,n); while(m--){ ans1 = -inf,ans2 = inf; scanf(\"%d%d\",\u0026L,\u0026R); query(1,1,n,L,R); printf(\"%d\\n\", ans1-ans2); } } return 0; } HDU 1754 I Hate It 单点更新，区间查询最大\n#include #include #include using namespace std; #define FOR( i , a , b ) for ( int i = a ; i #define RE freopen(\"1.in\",\"r\",stdin); #define bug(x) cout #define Mid ((l+r)1) #define lson rt#define rson rt const int maxn= 200000+5; const int inf=0x3f3f3f3f; int Max[maxn2]; int ans1,ans2; void build(int rt,int l,int r) { if(l==r){ scanf(\"%d\",\u0026Max[rt]); }else{ build(lson); build(rson); Max[rt] = max( Max[rt1], Max[rt1|1]); } } void update(int rt,int l,int r,int pos,int num) { if(l == r \u0026\u0026 r == pos){ Max[rt] = num; }else{ if( pos  Mid) update(lson,pos,num); if( pos  Mid) update(rson,pos,num); Max[rt] = max( Max[rt1], Max[rt1|1]); } } int query(int rt,int l,int r,int L,int R) { if(L  l \u0026\u0026 r  R){ return Max[rt]; }else{ int tmp = -1; if( L  Mid) tmp = max(tmp,query(lson,L,R)); if( R  Mid) tmp = max(tmp,query(rson,L,R)); return tmp; } } int main() { // RE  int n,m,L,R; char op; while(scanf(\"%d%d\",\u0026n,\u0026m)!=EOF){ build(1,1,n); getchar(); while(m--){ scanf(\"%c%d%d%*c\",\u0026op,\u0026L,\u0026R); if(op=='Q') printf(\"%d\\n\",query(1,1,n,L,R)); else update(1,1,n,L,R); } } return 0; } HDU 1166 敌兵布阵 单点更新，查询区间和\n#include #include #include using namespace std; #define FOR( i , a , b ) for ( int i = a ; i #define RE freopen(\"1.in\",\"r\",stdin); #define bug(x) cout #define Mid ((l+r)1) #define lson rt#define rson rt const int maxn= 50000+5; const int inf=0x3f3f3f3f; int sum[maxn2]; int ans1,ans2; void build(int rt,int l,int r) { if(l==r){ scanf(\"%d\",\u0026sum[rt]); }else{ build(lson); build(rson); sum[rt] = sum[rt1] + sum[rt1|1]; } } void update(int rt,int l,int r,int pos,int num) { if(l == r \u0026\u0026 r == pos){ sum[rt] += num; }else{ if( pos  Mid) update(lson,pos,num); else update(rson,pos,num); sum[rt] = sum[rt1] + sum[rt1|1]; } } int query(int rt,int l,int r,int L,int R) { if(L  l \u0026\u0026 r  R){ return sum[rt]; }else{ int tmp = 0; if( L  Mid) tmp += query(lson,L,R); if( R  Mid) tmp += query(rson,L,R); return tmp; } } int main() { // RE  int n,m,L,R,t; char op[10]; scanf(\"%d\",\u0026t); for(int cas=1;cast;cas++){ scanf(\"%d\",\u0026n); build(1,1,n); printf(\"Case %d:\\n\",cas); while(scanf(\"%s\",op),op[0]!='E'){ scanf(\"%d%d\",\u0026L,\u0026R); if(op[0]=='Q') printf(\"%d\\n\", query(1,1,n,L,R)); else if(op[0]=='A') update(1,1,n,L,R); else update(1,1,n,L,-R); } } return 0; } Lazy思想 区间成段更新 Lazy：正常来说，区间改值，当更改某个区间的值的时候，子区间也该跟着更改，这样容易TLE。 Lazy思想就是更新到某个区间的时候，就先给这个区间打上标记，标记内容是需要更新的值，并把子区间的值改为子区间对应的值，清除该区间的lazy标记；然后return，不去更新子区间。当下一次更新或查询等需要访问该区间的子区间的时候再把该区间的lazy和其他信息送回子区间。\n举个简单粗暴的例子： 对应下面的那个图，假如目的是求和，现在要给[1,6] 的值都加2，那么我们从[1,12]-[1,6]，然后[1,6]的sum值加上区间长度[ (6-1+1)*2 ]，再把[1,6]的add[i]设置为2，就不再往下更新了【这里极大提高效率】。下一次更新/查询[1,6]的子区间时，我们将[1,6]原存的add值下传给[1,6]的两个直接子区间，再往下更新。假设在这种情况下，我们再更新[1,6]加3，则[1,6]的add值为2+3=5，然后我们查询[1,3]，则从上往下经过[1,6]时把[1,6]的add值给了子区间[1,3]和[4,6]，同时把sum[子区间]跟着子区间长度和add[父结点]改动，清除add[父节点]。【如果是查询间接子区间，则连续传递add值，也就是连续pushDown】\n详细例子：假设update()是区间改值，query()是求和，所有叶子区间的和都为1，则[7,8]和[7,9]在build()的时候就附上了值（图中绿色字体）。假设此时我们更新[7,9]的值，改为2，则线段树从[1,12]-[7,12]-[7,9]，然后把[7,9]打上值为2的标记，求和（求和直接用区间长度*此时更新的值），然后不去更新[7,8]和[9,9]了，他们值仍然是2和1，lazy值为0。 然后我们查询[7,8]，当遍历经过[7,9]时:\nif(add[i]) pushDown(i); 成立，把[7,9]的lazy标记2传给子区间[7,8]和[9,9],分别求这2个子区间的和，把[7,9]的lazy标记去掉，然后继续遍历，到[7,8]的时候直接返回答案。 HDU 1698 Just a Hook 区间改值，求和\n#include #include #include #include using namespace std; #define ll long long #define FOR( i , a , b ) for ( int i = a ; i #define RE freopen(\"1.in\",\"r\",stdin); #define WE freopen(\"1.out\",\"w\",stdout); #define MOD 10009 #define bug(x) cout #define Mid ((l+r)1) #define lson rt#define rson rtconst int maxn = 100010; int sum[maxn2],add[maxn2]; void build(int rt,int l,int r) { add[rt] = 0; if(l == r){ sum[rt] = 1; }else{ build(lson); build(rson); sum[rt]=sum[rt1]+sum[rt1|1]; } } void pushDown(int rt,int len) { add[rt1] = add[rt1|1] = add[rt]; sum[rt1] = (len-(len1))*add[rt]; sum[rt1|1] = (len1)*add[rt]; add[rt] = 0; } void update(int rt,int l,int r,int L,int R,int z) { if(L  l \u0026\u0026 r  R){ add[rt] = z; sum[rt] = (r-l+1)*z; }else{ if(add[rt]) pushDown(rt,r-l+1); if(L  Mid) update(lson,L,R,z); if(R  Mid) update(rson,L,R,z); sum[rt] = sum[rt1] + sum[rt1|1]; } } int main() { // RE;  int t,n,q,x,y,z; int cnt=1; scanf(\"%d\",\u0026t); while(t--){ scanf(\"%d%d\",\u0026n,\u0026q); build(1,1,n); while(q--){ scanf(\"%d%d%d\",\u0026x,\u0026y,\u0026z); update(1,1,n,x,y,z); } printf(\"Case %d: The total value of the hook is %d.\\n\", cnt++,sum[1]); } return 0; } ",
+  "wordCount" : "2544",
+  "inLanguage": "zh-cn",
+  "datePublished": "2022-02-19T12:14:16+08:00",
+  "dateModified": "2022-02-19T12:14:16+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sqdtss.github.io/posts/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%85%A5%E9%97%A8/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Space of Mr. Tan",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sqdtss.github.io/favicon.ico"
+    }
+  }
+}
+</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://sqdtss.github.io/" accesskey="h" title="Space of Mr. Tan (Alt + H)">Space of Mr. Tan</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://sqdtss.github.io/posts/" title="HOME">
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sqdtss.github.io/archives/" title="ARCHIVES">
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sqdtss.github.io/tags/" title="TAGS">
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sqdtss.github.io/categories/" title="CATEGORIES">
+                    <span>CATEGORIES</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://sqdtss.github.io/about/" title="ABOUT">
+                    <span>ABOUT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      线段树入门 &amp; lazy思想 
+    </h1>
+    <div class="post-meta"><span title='2022-02-19 12:14:16 +0800 CST'>February 19, 2022</span>&nbsp;·&nbsp;<span>&nbsp;字数：2544</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>线段树将区间分成若干个子区间，子区间又继续分，直到区间为一个点（区间左值等于右值。
+对于父区间[a,b]，其子区间为[a,(a+b)/2]和[(a+b)/2+1,b]，用于求区间的值，如区间最值、区间的和等。
+代码实现中，约定结点下标从1开始，所以某结点下标为x，那么左儿子下标为2x，右儿子下标为2x+1，父结点下标为x/2。
+<img loading="lazy" src="https://img-blog.csdn.net/20150728104004611" alt=""  />
+</p>
+<p>|:常用符号:|
+|:符号:|:等价:|:意义:|
+|:rt&laquo;1:|:rt<em>2:|:左子树的编号:|
+|:rt&laquo;1|1:|:rt</em>2+1:|:右子树的编号:|
+|:(l+r)&raquo;1:|:(l+r)/2:|:区间长度的一半:|</p>
+<p><strong>常用宏定义</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#75715e">#define Mid ((l+r)&gt;&gt;1)      	</span><span style="color:#75715e">//注意括号
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define lson rt&lt;&lt;1,l,Mid	    </span><span style="color:#75715e">//左结点
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define rson rt&lt;&lt;1|1,Mid+1,r	</span><span style="color:#75715e">//右结点
+</span></code></pre></div><p><strong>建树</strong>
+建树丛根结点开始，递归建立左右子树，直到叶子结点，然后反向赋值，父结点的值 = F(左结点的值，右结点的值），这个F是依据题意变的，如果是区间最大则为max()</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">build</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r)      <span style="color:#75715e">//建编号为rt的区间为[l,r]的树，主函数传进来的固定是(1,1,n)
+</span><span style="color:#75715e"></span>{
+    <span style="color:#66d9ef">if</span>(l<span style="color:#f92672">==</span>r){                      <span style="color:#75715e">//叶子结点赋初值，注意下标，Max的是编号，val原数组的是l，看图可以理解
+</span><span style="color:#75715e"></span>        Max[rt] <span style="color:#f92672">=</span> val[l];
+    }<span style="color:#66d9ef">else</span>{                         <span style="color:#75715e">//建左右子树
+</span><span style="color:#75715e"></span>        build(lson);
+        build(rson);
+        Max[rt] <span style="color:#f92672">=</span> max( Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);  <span style="color:#75715e">//父结点Max值为Max(左子结点，右子结点）
+</span><span style="color:#75715e"></span>    }
+}
+</code></pre></div><p><strong>查询</strong>
+查询为区间查询（只是查询某个点的话不需要线段树），即在区间里查询某个特性值，每次查询都是从跟结点开始往下，根据查询区间和当前区间的区间位置判断是要去左右子区间查询，还是直接返回。如果被查询区间是查询区间的子区间则直接返回子区间的值，如在[1,6]里查询[1,12]就返回[1,6]的值，不再往下查询。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">query</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> L,<span style="color:#66d9ef">int</span> R)  <span style="color:#75715e">//在[l,r]里查询[L,R]的值，[L,R]一直不变，[l,r]变
+</span><span style="color:#75715e"></span>{
+    <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> l <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">&lt;=</span> R){   
+        ans1 <span style="color:#f92672">=</span> max(ans1,Max[rt]);
+        ans2 <span style="color:#f92672">=</span> min(ans2,Min[rt]);
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>( L <span style="color:#f92672">&lt;=</span> Mid) <span style="color:#75715e">//查询区间在当前区间的左半区间有内容，如在[1,6]里查询[2,3]
+</span><span style="color:#75715e"></span>            query(lson,L,R);    
+        <span style="color:#66d9ef">if</span>( R <span style="color:#f92672">&gt;</span> Mid)  <span style="color:#75715e">//同理去右子区间，注意不能有else，因为有横跨左右的情况，如[1,6]里查询[2,5]
+</span><span style="color:#75715e"></span>            query(rson,L,R);
+    }
+}
+</code></pre></div><p><strong>更新</strong>
+更新分为单点更新和区间更新，区间更新等会在下面讲述，而单点更新跟普通区间查询差不多</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> pos,<span style="color:#66d9ef">int</span> num)
+{
+    <span style="color:#66d9ef">if</span>(l <span style="color:#f92672">==</span> r <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">==</span> pos){     <span style="color:#75715e">//到对应的叶结点
+</span><span style="color:#75715e"></span>        Max[rt] <span style="color:#f92672">=</span> num;
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>( pos <span style="color:#f92672">&lt;=</span> Mid)
+            update(lson,pos,num);
+        <span style="color:#66d9ef">if</span>( pos <span style="color:#f92672">&gt;</span> Mid)          <span style="color:#75715e">//或者直接else，点不可能同时在两个区间里
+</span><span style="color:#75715e"></span>            update(rson,pos,num);
+        Max[rt] <span style="color:#f92672">=</span> max( Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);
+    }
+}
+</code></pre></div><p>数组大小要为原数据范围的4倍，证明可自行百度。</p>
+<p><strong>题目</strong>
+<a href="http://poj.org/problem?id=3264">POJ 3264 Balanced Lineup</a> 求区间的最大值-最小值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#75715e">#define FOR( i , a , b ) for ( int i = a ; i &lt;= b ; ++ i )
+</span><span style="color:#75715e">#define RE freopen(&#34;1.in&#34;,&#34;r&#34;,stdin);
+</span><span style="color:#75715e">#define bug(x) cout&lt;&lt;#x&lt;&lt;&#34;:&#34;&lt;&lt;(x)&lt;&lt;endl;
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define Mid ((l+r)&gt;&gt;1)      </span><span style="color:#75715e">//括号！
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define lson rt&lt;&lt;1,l,Mid
+</span><span style="color:#75715e">#define rson rt&lt;&lt;1|1,Mid+1,r
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> maxn<span style="color:#f92672">=</span> <span style="color:#ae81ff">50005</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> inf<span style="color:#f92672">=</span><span style="color:#ae81ff">0x3f3f3f3f</span>;
+<span style="color:#66d9ef">int</span> Max[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>],Min[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>];
+<span style="color:#66d9ef">int</span> ans1,ans2;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">build</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r)
+{
+    <span style="color:#66d9ef">if</span>(l<span style="color:#f92672">==</span>r){
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>Max[rt]);
+        Min[rt] <span style="color:#f92672">=</span> Max[rt];
+    }<span style="color:#66d9ef">else</span>{
+        build(lson);
+        build(rson);
+        Max[rt] <span style="color:#f92672">=</span> max( Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);
+        Min[rt] <span style="color:#f92672">=</span> min( Min[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Min[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);
+    }
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">query</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> L,<span style="color:#66d9ef">int</span> R)
+{
+    <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> l <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">&lt;=</span> R){
+        ans1 <span style="color:#f92672">=</span> max(ans1,Max[rt]);
+        ans2 <span style="color:#f92672">=</span> min(ans2,Min[rt]);
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>( L <span style="color:#f92672">&lt;=</span> Mid)
+            query(lson,L,R);
+        <span style="color:#66d9ef">if</span>( R <span style="color:#f92672">&gt;</span> Mid)
+            query(rson,L,R);
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+    <span style="color:#66d9ef">int</span> n,m,L,R;
+    <span style="color:#66d9ef">while</span>(scanf(<span style="color:#e6db74">&#34;%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>n,<span style="color:#f92672">&amp;</span>m)<span style="color:#f92672">!=</span>EOF){
+        build(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n);
+        <span style="color:#66d9ef">while</span>(m<span style="color:#f92672">--</span>){
+            ans1 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>inf,ans2 <span style="color:#f92672">=</span> inf;
+            scanf(<span style="color:#e6db74">&#34;%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>L,<span style="color:#f92672">&amp;</span>R);
+            query(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,R);
+            printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ans1<span style="color:#f92672">-</span>ans2);
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1754">HDU 1754 I Hate It</a> 单点更新，区间查询最大</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#75715e">#define FOR( i , a , b ) for ( int i = a ; i &lt;= b ; ++ i )
+</span><span style="color:#75715e">#define RE freopen(&#34;1.in&#34;,&#34;r&#34;,stdin);
+</span><span style="color:#75715e">#define bug(x) cout&lt;&lt;#x&lt;&lt;&#34;:&#34;&lt;&lt;(x)&lt;&lt;endl;
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define Mid ((l+r)&gt;&gt;1)     
+</span><span style="color:#75715e">#define lson rt&lt;&lt;1,l,Mid
+</span><span style="color:#75715e">#define rson rt&lt;&lt;1|1,Mid+1,r
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> maxn<span style="color:#f92672">=</span> <span style="color:#ae81ff">200000</span><span style="color:#f92672">+</span><span style="color:#ae81ff">5</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> inf<span style="color:#f92672">=</span><span style="color:#ae81ff">0x3f3f3f3f</span>;
+<span style="color:#66d9ef">int</span> Max[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>];
+<span style="color:#66d9ef">int</span> ans1,ans2;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">build</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r)
+{
+    <span style="color:#66d9ef">if</span>(l<span style="color:#f92672">==</span>r){
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>Max[rt]);
+    }<span style="color:#66d9ef">else</span>{
+        build(lson);
+        build(rson);
+        Max[rt] <span style="color:#f92672">=</span> max( Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);
+    }
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> pos,<span style="color:#66d9ef">int</span> num)
+{
+    <span style="color:#66d9ef">if</span>(l <span style="color:#f92672">==</span> r <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">==</span> pos){
+        Max[rt] <span style="color:#f92672">=</span> num;
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>( pos <span style="color:#f92672">&lt;=</span> Mid)
+            update(lson,pos,num);
+        <span style="color:#66d9ef">if</span>( pos <span style="color:#f92672">&gt;</span> Mid)
+            update(rson,pos,num);
+        Max[rt] <span style="color:#f92672">=</span> max( Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>], Max[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>]);
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">query</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> L,<span style="color:#66d9ef">int</span> R)
+{
+    <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> l <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">&lt;=</span> R){
+        <span style="color:#66d9ef">return</span> Max[rt];
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">int</span> tmp <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        <span style="color:#66d9ef">if</span>( L <span style="color:#f92672">&lt;=</span> Mid)
+            tmp <span style="color:#f92672">=</span> max(tmp,query(lson,L,R));
+        <span style="color:#66d9ef">if</span>( R <span style="color:#f92672">&gt;</span> Mid)
+            tmp <span style="color:#f92672">=</span> max(tmp,query(rson,L,R));
+        <span style="color:#66d9ef">return</span> tmp;
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+<span style="color:#75715e">//    RE
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> n,m,L,R;
+    <span style="color:#66d9ef">char</span> op;
+    <span style="color:#66d9ef">while</span>(scanf(<span style="color:#e6db74">&#34;%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>n,<span style="color:#f92672">&amp;</span>m)<span style="color:#f92672">!=</span>EOF){
+        build(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n);
+        getchar();
+        <span style="color:#66d9ef">while</span>(m<span style="color:#f92672">--</span>){
+            scanf(<span style="color:#e6db74">&#34;%c%d%d%*c&#34;</span>,<span style="color:#f92672">&amp;</span>op,<span style="color:#f92672">&amp;</span>L,<span style="color:#f92672">&amp;</span>R);
+            <span style="color:#66d9ef">if</span>(op<span style="color:#f92672">==</span><span style="color:#e6db74">&#39;Q&#39;</span>)
+                printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,query(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,R));
+            <span style="color:#66d9ef">else</span>
+                update(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,R);
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1166">HDU 1166 敌兵布阵</a> 单点更新，查询区间和</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#75715e">#define FOR( i , a , b ) for ( int i = a ; i &lt;= b ; ++ i )
+</span><span style="color:#75715e">#define RE freopen(&#34;1.in&#34;,&#34;r&#34;,stdin);
+</span><span style="color:#75715e">#define bug(x) cout&lt;&lt;#x&lt;&lt;&#34;:&#34;&lt;&lt;(x)&lt;&lt;endl;
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define Mid ((l+r)&gt;&gt;1)
+</span><span style="color:#75715e">#define lson rt&lt;&lt;1,l,Mid
+</span><span style="color:#75715e">#define rson rt&lt;&lt;1|1,Mid+1,r
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> maxn<span style="color:#f92672">=</span> <span style="color:#ae81ff">50000</span><span style="color:#f92672">+</span><span style="color:#ae81ff">5</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> inf<span style="color:#f92672">=</span><span style="color:#ae81ff">0x3f3f3f3f</span>;
+<span style="color:#66d9ef">int</span> sum[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>];
+<span style="color:#66d9ef">int</span> ans1,ans2;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">build</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r)
+{
+    <span style="color:#66d9ef">if</span>(l<span style="color:#f92672">==</span>r){
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>sum[rt]);
+    }<span style="color:#66d9ef">else</span>{
+        build(lson);
+        build(rson);
+        sum[rt] <span style="color:#f92672">=</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>];
+    }
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> pos,<span style="color:#66d9ef">int</span> num)
+{
+    <span style="color:#66d9ef">if</span>(l <span style="color:#f92672">==</span> r <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">==</span> pos){     
+        sum[rt] <span style="color:#f92672">+=</span> num;
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>( pos <span style="color:#f92672">&lt;=</span> Mid)
+            update(lson,pos,num);
+        <span style="color:#66d9ef">else</span>        
+            update(rson,pos,num);
+        sum[rt] <span style="color:#f92672">=</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>];
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">query</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> L,<span style="color:#66d9ef">int</span> R)
+{
+    <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> l <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">&lt;=</span> R){
+        <span style="color:#66d9ef">return</span> sum[rt];
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">int</span> tmp <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">if</span>( L <span style="color:#f92672">&lt;=</span> Mid)
+            tmp <span style="color:#f92672">+=</span> query(lson,L,R);
+        <span style="color:#66d9ef">if</span>( R <span style="color:#f92672">&gt;</span> Mid)
+            tmp <span style="color:#f92672">+=</span> query(rson,L,R);
+        <span style="color:#66d9ef">return</span> tmp;
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+<span style="color:#75715e">//    RE
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> n,m,L,R,t;
+    <span style="color:#66d9ef">char</span> op[<span style="color:#ae81ff">10</span>];
+    scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>t);
+    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> cas<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;cas<span style="color:#f92672">&lt;=</span>t;cas<span style="color:#f92672">++</span>){
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>n);
+        build(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n);
+        printf(<span style="color:#e6db74">&#34;Case %d:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,cas);
+        <span style="color:#66d9ef">while</span>(scanf(<span style="color:#e6db74">&#34;%s&#34;</span>,op),op[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">!=</span><span style="color:#e6db74">&#39;E&#39;</span>){
+            scanf(<span style="color:#e6db74">&#34;%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>L,<span style="color:#f92672">&amp;</span>R);
+            <span style="color:#66d9ef">if</span>(op[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span><span style="color:#e6db74">&#39;Q&#39;</span>)
+                printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, query(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,R));
+            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(op[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span><span style="color:#e6db74">&#39;A&#39;</span>)
+                update(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,R);
+            <span style="color:#66d9ef">else</span>
+                update(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,L,<span style="color:#f92672">-</span>R);
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p><strong>Lazy思想</strong>
+<strong>区间成段更新</strong>
+Lazy：正常来说，区间改值，当更改某个区间的值的时候，子区间也该跟着更改，这样容易TLE。
+Lazy思想就是更新到某个区间的时候，就先给这个区间打上标记，标记内容是需要更新的值，并把子区间的值改为子区间对应的值，清除该区间的lazy标记；然后return，不去更新子区间。当下一次更新或查询等需要访问该区间的子区间的时候再把该区间的lazy和其他信息送回子区间。</p>
+<p>举个简单粗暴的例子：
+对应下面的那个图，假如目的是求和，现在要给[1,6] 的值都加2，那么我们从[1,12]-&gt;[1,6]，然后[1,6]的sum值加上区间长度[ (6-1+1)*2 ]，再把[1,6]的add[i]设置为2，就不再往下更新了【这里极大提高效率】。下一次更新/查询[1,6]的子区间时，我们将[1,6]原存的add值下传给[1,6]的两个直接子区间，再往下更新。假设在这种情况下，我们再更新[1,6]加3，则[1,6]的add值为2+3=5，然后我们查询[1,3]，则从上往下经过[1,6]时把[1,6]的add值给了子区间[1,3]和[4,6]，同时把sum[子区间]跟着子区间长度和add[父结点]改动，清除add[父节点]。【如果是查询间接子区间，则连续传递add值，也就是连续pushDown】</p>
+<p>详细例子：假设update()是区间改值，query()是求和，所有叶子区间的和都为1，则[7,8]和[7,9]在build()的时候就附上了值（图中绿色字体）。假设此时我们更新[7,9]的值，改为2，则线段树从[1,12]-&gt;[7,12]-&gt;[7,9]，然后把[7,9]打上值为2的标记，求和（求和直接用区间长度*此时更新的值），然后不去更新[7,8]和[9,9]了，他们值仍然是2和1，lazy值为0。
+<img loading="lazy" src="https://img-blog.csdn.net/20150206115701887" alt=""  />
+
+然后我们查询[7,8]，当遍历经过[7,9]时:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#66d9ef">if</span>(add[i])
+    pushDown(i);
+</code></pre></div><p>成立，把[7,9]的lazy标记2传给子区间[7,8]和[9,9],分别求这2个子区间的和，把[7,9]的lazy标记去掉，然后继续遍历，到[7,8]的时候直接返回答案。
+<img loading="lazy" src="https://img-blog.csdn.net/20150206115708986" alt=""  />
+
+<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1698">HDU 1698 Just a Hook</a> 区间改值，求和</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-CPP" data-lang="CPP"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#75715e">#define ll long long
+</span><span style="color:#75715e">#define FOR( i , a , b ) for ( int i = a ; i &lt;= b ; ++ i )
+</span><span style="color:#75715e">#define RE freopen(&#34;1.in&#34;,&#34;r&#34;,stdin);
+</span><span style="color:#75715e">#define WE freopen(&#34;1.out&#34;,&#34;w&#34;,stdout);
+</span><span style="color:#75715e">#define MOD 10009
+</span><span style="color:#75715e">#define bug(x) cout&lt;&lt;#x&lt;&lt;&#34;:&#34;&lt;&lt;(x)&lt;&lt;endl;
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define Mid ((l+r)&gt;&gt;1)
+</span><span style="color:#75715e">#define lson rt&lt;&lt;1,l,Mid
+</span><span style="color:#75715e">#define rson rt&lt;&lt;1|1,Mid+1,r
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> maxn <span style="color:#f92672">=</span> <span style="color:#ae81ff">100010</span>;
+<span style="color:#66d9ef">int</span> sum[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>],add[maxn<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">2</span>];
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">build</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r)
+{
+    add[rt] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">if</span>(l <span style="color:#f92672">==</span> r){
+        sum[rt] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+    }<span style="color:#66d9ef">else</span>{
+        build(lson);
+        build(rson);
+        sum[rt]<span style="color:#f92672">=</span>sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">+</span>sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>];
+    }
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pushDown</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> len)
+{
+    add[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> add[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> add[rt];
+    sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (len<span style="color:#f92672">-</span>(len<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">1</span>))<span style="color:#f92672">*</span>add[rt];
+    sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (len<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>add[rt];
+    add[rt] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">int</span> rt,<span style="color:#66d9ef">int</span> l,<span style="color:#66d9ef">int</span> r,<span style="color:#66d9ef">int</span> L,<span style="color:#66d9ef">int</span> R,<span style="color:#66d9ef">int</span> z)
+{
+    <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> l <span style="color:#f92672">&amp;&amp;</span> r <span style="color:#f92672">&lt;=</span> R){
+        add[rt] <span style="color:#f92672">=</span> z;
+        sum[rt] <span style="color:#f92672">=</span> (r<span style="color:#f92672">-</span>l<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>z;
+    }<span style="color:#66d9ef">else</span>{
+        <span style="color:#66d9ef">if</span>(add[rt])
+            pushDown(rt,r<span style="color:#f92672">-</span>l<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>);
+        <span style="color:#66d9ef">if</span>(L <span style="color:#f92672">&lt;=</span> Mid)
+            update(lson,L,R,z);
+        <span style="color:#66d9ef">if</span>(R <span style="color:#f92672">&gt;</span> Mid)
+            update(rson,L,R,z);
+        sum[rt] <span style="color:#f92672">=</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> sum[rt<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">|</span><span style="color:#ae81ff">1</span>];
+    }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+<span style="color:#75715e">//    RE;
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> t,n,q,x,y,z;
+    <span style="color:#66d9ef">int</span> cnt<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
+    scanf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">&amp;</span>t);
+    <span style="color:#66d9ef">while</span>(t<span style="color:#f92672">--</span>){
+        scanf(<span style="color:#e6db74">&#34;%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>n,<span style="color:#f92672">&amp;</span>q);
+        build(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n);
+        <span style="color:#66d9ef">while</span>(q<span style="color:#f92672">--</span>){
+            scanf(<span style="color:#e6db74">&#34;%d%d%d&#34;</span>,<span style="color:#f92672">&amp;</span>x,<span style="color:#f92672">&amp;</span>y,<span style="color:#f92672">&amp;</span>z);
+            update(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,n,x,y,z);
+        }
+        printf(<span style="color:#e6db74">&#34;Case %d: The total value of the hook is %d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, cnt<span style="color:#f92672">++</span>,sum[<span style="color:#ae81ff">1</span>]);
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://sqdtss.github.io/tags/algorithm/">algorithm</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://sqdtss.github.io/">Space of Mr. Tan</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
